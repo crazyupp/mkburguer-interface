@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import Logo from '../../assets/logo_burguer.svg';
@@ -38,10 +39,18 @@ export function Login() {
   });
 
   const onSubmit = async (data) => {
-    const response = await api.post('/sessions', {
-      email: data.email,
-      password: data.password,
-    });
+    const response = await toast.promise(
+      api.post('/sessions', {
+        email: data.email,
+        password: data.password,
+      }),
+      {
+        pending: 'Verificando seus dados',
+        success: 'Seja Bem-vindo(a) 👌',
+        error: 'Email ou Senha Incorretos 🤯',
+      }
+    );
+
     console.log(response);
   };
 
