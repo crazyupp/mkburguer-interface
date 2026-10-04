@@ -4,6 +4,7 @@ import * as yup from 'yup';
 
 import Logo from '../../assets/logo_burguer.svg';
 import { Button } from '../../components/Button';
+import { api } from '../../services/api';
 import {
   Container,
   InputContainer,
@@ -35,7 +36,14 @@ export function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = async (data) => {
+    const response = await api.post('/sessions', {
+      email: data.email,
+      password: data.password,
+    });
+    console.log(response);
+  };
 
   return (
     <Container>
@@ -49,7 +57,7 @@ export function Login() {
           <br />
           Acesse com seu <span>Login e senha.</span>
         </Title>
-        <Form form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
             <label>Email</label>
             <input type="email" {...register('email')} />
