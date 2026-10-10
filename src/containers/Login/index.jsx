@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
@@ -17,6 +18,8 @@ import {
 } from './styles';
 
 export function Login() {
+  const navigate = useNavigate();
+
   const schema = yup
     .object({
       email: yup
@@ -46,7 +49,14 @@ export function Login() {
       }),
       {
         pending: 'Verificando seus dados',
-        success: 'Seja Bem-vindo(a) 👌',
+        success: {
+          render() {
+            setTimeout(() => {
+              navigate('/');
+            }, 2000);
+            return `Seja Bem-vindo(a) 👌`;
+          },
+        },
         error: 'Email ou Senha Incorretos 🤯',
       }
     );
@@ -82,7 +92,7 @@ export function Login() {
         </Form>
 
         <p>
-          Não possui conta <Link>Clique aqui</Link>
+          Não possui conta <Link to="/cadastro">Clique aqui</Link>
         </p>
       </RightContainer>
     </Container>
